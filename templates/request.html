@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Collection Request | Waste Helper</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f4;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        nav {
+            background: #104d32;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 25px 18px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #176b45;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 17px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 22px;
+            background: #176b45;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #104d32;
+        }
+
+        .note {
+            background: #fff3cd;
+            color: #664d03;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        footer {
+            background: #104d32;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 35px;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+            .form-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Waste Collection Request</h1>
+    <p>Submit a request for waste collection assistance</p>
+</header>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/awareness">Awareness</a>
+    <a href="/classification">Classification</a>
+    <a href="/schedules">Collection Schedule</a>
+    <a href="/request">Collection Request</a>
+</nav>
+
+<div class="container">
+
+    <div class="form-box">
+
+        <h2>Submit Your Request</h2>
+
+        <div class="note">
+            Please provide accurate information.
+            This application records digital requests;
+            submission does not guarantee municipal pickup.
+        </div>
+
+        <form action="/request" method="POST">
+
+            <label for="name">Full Name</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                required
+            >
+
+            <label for="phone">Contact Number</label>
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Enter your contact number"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                title="Please enter a 10-digit contact number"
+                required
+            >
+
+            <label for="address">Complete Address</label>
+            <textarea
+                id="address"
+                name="address"
+                rows="3"
+                placeholder="Enter your address"
+                required
+            ></textarea>
+
+            <label for="waste_type">Type of Waste</label>
+            <select id="waste_type" name="waste_type" required>
+                <option value="">Select waste type</option>
+                <option value="Wet Waste">Wet Waste</option>
+                <option value="Dry Waste">Dry Waste</option>
+                <option value="Hazardous Waste">Hazardous Waste</option>
+            </select>
+
+            <label for="date">Preferred Collection Date</label>
+<input type="date" id="date" name="date" required>
+
+<p id="date-message" style="color: #176b45; font-size: 13px;">
+    Select a waste type first to see available collection dates.
+</p>
+
+            <label for="instructions">Additional Instructions</label>
+            <textarea
+                id="instructions"
+                name="instructions"
+                rows="3"
+                placeholder="Any additional information (optional)"
+            ></textarea>
+
+            <button type="submit">Submit Collection Request</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<footer>
+    Waste Segregation Awareness and Collection Helper | 2026–27
+</footer>
+<script>
+    const wasteType = document.getElementById("waste_type");
+    const collectionDate = document.getElementById("date");
+    const dateMessage = document.getElementById("date-message");
+
+    const collectionDays = {
+        "Wet Waste": [1, 3, 5],
+        "Dry Waste": [2, 6],
+        "Hazardous Waste": [4]
+    };
+
+    function updateCalendar() {
+        const selectedWaste = wasteType.value;
+        const allowedDays = collectionDays[selectedWaste];
+
+        if (!allowedDays) {
+            collectionDate.value = "";
+            collectionDate.disabled = true;
+            dateMessage.textContent = "Please select a waste type first.";
+            return;
+        }
+
+        collectionDate.disabled = false;
+        collectionDate.value = "";
+
+        const today = new Date();
+        const localToday = new Date(
+            today.getTime() - today.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        collectionDate.min = localToday;
+
+        dateMessage.textContent =
+            "Available days: " +
+            allowedDays.map(day =>
+                ["Sunday", "Monday", "Tuesday", "Wednesday",
+                 "Thursday", "Friday", "Saturday"][day]
+            ).join(", ");
+    }
+
+    collectionDate.addEventListener("change", function () {
+        const selectedDate = new Date(
+            this.value + "T00:00:00"
+        );
+
+        const allowedDays = collectionDays[wasteType.value];
+
+        if (!allowedDays.includes(selectedDate.getDay())) {
+            alert("Please select a date that matches the collection schedule.");
+            this.value = "";
+        }
+    });
+
+    wasteType.addEventListener("change", updateCalendar);
+
+    collectionDate.disabled = true;
+</script>
+
+</body>
+</html>

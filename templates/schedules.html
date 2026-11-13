@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Collection Schedule | Waste Helper</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f4;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        nav {
+            background: #104d32;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 25px 18px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .schedules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #176b45;
+        }
+
+        .demo-note {
+            background: #fff3cd;
+            color: #664d03;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .instructions {
+            background: #e3f2e8;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        footer {
+            background: #104d32;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 35px;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Waste Collection Schedule</h1>
+    <p>Know when and how to prepare your waste for collection</p>
+</header>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/awareness">Awareness</a>
+    <a href="/classification">Classification</a>
+    <a href="/schedules">Collection Schedule</a>
+    <a href="/request" class="request-button">♻ Send Collection Request</a>
+</nav>
+
+<div class="container">
+
+    <section class="intro">
+        <h2>Collection Days and Timings</h2>
+        <p>
+            Check the sample collection schedule below
+            and prepare your waste accordingly.
+        </p>
+    </section>
+
+    <div class="demo-note">
+        <strong>Note:</strong> These are sample demonstration
+        schedules for this project, not verified municipal
+        collection timings.
+    </div>
+
+    <section class="schedules">
+
+        <div class="card">
+            <h3>🌱 Wet Waste</h3>
+            <p><strong>Collection Day:</strong> Monday, Wednesday and Friday</p>
+            <p><strong>Sample Time:</strong> 7:00 AM – 9:00 AM</p>
+            <p>Keep suitable kitchen and garden waste separate.</p>
+        </div>
+
+        <div class="card">
+            <h3>♻️ Dry Waste</h3>
+            <p><strong>Collection Day:</strong> Tuesday and Saturday</p>
+            <p><strong>Sample Time:</strong> 9:00 AM – 11:00 AM</p>
+            <p>Keep recyclable materials clean and dry.</p>
+        </div>
+
+        <div class="card">
+            <h3>⚠️ Hazardous Waste</h3>
+            <p><strong>Collection Day:</strong> Thursday</p>
+            <p><strong>Sample Time:</strong> 10:00 AM – 12:00 PM</p>
+            <p>Use authorised collection facilities for batteries, chemicals and other hazardous waste.</p>
+        </div>
+
+    </section>
+
+    <section class="instructions">
+        <h2>Collection Instructions</h2>
+
+        <ul>
+            <li>Separate wet and dry waste before collection.</li>
+            <li>Use suitable and covered waste containers.</li>
+            <li>Keep recyclable materials clean and dry.</li>
+            <li>Never mix hazardous waste with regular household waste.</li>
+            <li>Place waste out only according to the applicable collection instructions.</li>
+            <li>Follow your local municipal guidelines.</li>
+        </ul>
+    </section>
+
+</div>
+
+<footer>
+    Waste Segregation Awareness and Collection Helper | 2026–27
+</footer>
+
+</body>
+</html>
