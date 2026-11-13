@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Waste Classification | Waste Helper</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f4;
+            color: #26352b;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        nav {
+            background: #104d32;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 12px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 25px 18px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        input {
+            width: 75%;
+            padding: 13px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 13px 20px;
+            background: #176b45;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #104d32;
+        }
+
+        .result {
+            display: none;
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .result h2 {
+            color: #176b45;
+        }
+
+        footer {
+            background: #104d32;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 35px;
+        }
+
+        @media (max-width: 600px) {
+            input {
+                width: 100%;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Waste Classification</h1>
+    <p>Identify waste and learn how to dispose of it responsibly</p>
+</header>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/awareness">Awareness</a>
+    <a href="/classification">Classification</a>
+    <a href="/collection">Collection</a>
+</nav>
+
+<div class="container">
+
+    <section class="intro">
+        <h2>Search Your Waste Item</h2>
+        <p>
+            Enter the name of a waste item to find its category
+            and recommended disposal method.
+        </p>
+        <p style="color: #176b45; font-size: 14px;">
+        Note: Please search for only one waste item at a time.
+        </p>
+    </section>
+
+    <section class="search-box">
+        <input
+            type="text"
+            id="wasteInput"
+            placeholder="Example: Banana peel, Plastic bottle, Battery"
+        >
+
+        <br>
+
+        <button onclick="classifyWaste()">Classify Waste</button>
+    </section>
+
+    <section class="result" id="result">
+        <h2 id="itemName"></h2>
+        <p><strong>Category:</strong> <span id="category"></span></p>
+        <p><strong>Disposal Instructions:</strong></p>
+        <p id="instructions"></p>
+    </section>
+
+</div>
+
+<footer>
+    Waste Segregation Awareness and Collection Helper | 2026–27
+</footer>
+
+<script>
+    function classifyWaste() {
+        const item = document.getElementById("wasteInput")
+            .value.trim().toLowerCase();
+
+        const wasteData = {
+            "banana peel": {
+                category: "Biodegradable Waste",
+                instructions: "Place in the wet waste or compost bin."
+            },
+            "vegetable waste": {
+                category: "Biodegradable Waste",
+                instructions: "Compost suitable vegetable waste."
+            },
+            "paper": {
+                category: "Recyclable Waste",
+                instructions: "Keep clean and dry, then send for recycling."
+            },
+            "cardboard": {
+                category: "Recyclable Waste",
+                instructions: "Keep dry and place in the recyclable waste stream."
+            },
+            "plastic bottle": {
+                category: "Recyclable Waste",
+                instructions: "Empty and clean it. Follow local plastic recycling guidelines."
+            },
+            "battery": {
+                category: "Hazardous Waste",
+                instructions: "Do not mix with household waste. Give it to an authorised battery collection point."
+            },
+            "paint": {
+                category: "Hazardous Waste",
+                instructions: "Keep in a sealed container and use an authorised hazardous waste collection facility."
+            },
+            "thermocol": {
+                category: "Non-Recyclable Waste",
+                instructions: "Check whether a local facility accepts it. Otherwise follow municipal disposal instructions."
+            }
+        };
+
+        const result = document.getElementById("result");
+
+        if (item === "") {
+            alert("Please enter a waste item.");
+            result.style.display = "none";
+            return;
+        }
+
+        if (wasteData[item]) {
+            document.getElementById("itemName").textContent =
+                item.charAt(0).toUpperCase() + item.slice(1);
+
+            document.getElementById("category").textContent =
+                wasteData[item].category;
+
+            document.getElementById("instructions").textContent =
+                wasteData[item].instructions;
+
+            result.style.display = "block";
+        } else {
+            document.getElementById("itemName").textContent = "Item Not Found";
+
+            document.getElementById("category").textContent =
+                "Not available in our sample database";
+
+            document.getElementById("instructions").textContent =
+                "Please check the item name or consult your local municipal waste guidelines.";
+
+            result.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
