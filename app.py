@@ -1,9 +1,15 @@
 
-from flask import Flask, render_template, request
-from database import create_table, save_request
+from flask import Flask, render_template, request, redirect, url_for, session
+app = Flask(__name__)
+app.secret_key = "waste-helper-secret-key-2026"
+
+
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "Admin@123"
+
+from database import create_table, save_request, get_connection, update_request_status
 from datetime import date
 
-app = Flask(__name__)
 
 # Create the database table when the application starts
 create_table()
@@ -92,6 +98,99 @@ def collection_request():
         """
 
     return render_template("request.html")
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+
+    if request.method == "POST":
+
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+
+            session["admin_logged_in"] = True
+
+            return redirect(url_for("admin_dashboard"))
+
+        return "Invalid username or password. Please try again.", 401
+
+    return render_template("admin_login.html")
+
+
+
+@app.route("/admin-dashboard")
+def admin_dashboard():
+
+    # Check whether admin is logged in
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    # Retrieve collection requests from database
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM collection_requests
+        ORDER BY created_at DESC
+    """)
+
+    requests_list = cursor.fetchall()
+
+    connection.close()
+
+    # Calculate request status counts
+    pending_count = sum(
+        1 for item in requests_list
+        if item["status"] == "Pending"
+    )
+
+    approved_count = sum(
+        1 for item in requests_list
+        if item["status"] == "Approved"
+    )
+
+    completed_count = sum(
+        1 for item in requests_list
+        if item["status"] == "Completed"
+    )
+
+    return render_template(
+        "admin_dashboard.html",
+        requests=requests_list,
+        pending_count=pending_count,
+        approved_count=approved_count,
+        completed_count=completed_count
+    )
+
+@app.route("/update-status/<int:request_id>", methods=["POST"])
+def update_status(request_id):
+
+    # Check admin login
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    # Get the new status
+    status = request.form.get("status", "")
+
+    # Allow only valid statuses
+    allowed_statuses = ["Pending", "Approved", "Completed"]
+
+    if status not in allowed_statuses:
+        return "Invalid status selected.", 400
+
+    # Update status in database
+    update_request_status(request_id, status)
+
+    return redirect(url_for("admin_dashboard"))
+
+@app.route("/admin-logout")
+def admin_logout():
+
+    # Clear the admin login session
+    session.pop("admin_logged_in", None)
+
+    return redirect(url_for("admin_login"))
 
 
 if __name__ == "__main__":

@@ -36,9 +36,6 @@ def create_table():
         )
     """)
 
-    connection.commit()
-    connection.close()
-
 
 def save_request(name, phone, address, waste_type,
                  collection_date, instructions):
@@ -59,6 +56,19 @@ def save_request(name, phone, address, waste_type,
         collection_date,
         instructions
     ))
+
+    connection.commit()
+    connection.close()
+def update_request_status(request_id, status):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE collection_requests
+        SET status = ?
+        WHERE id = ?
+    """, (status, request_id))
 
     connection.commit()
     connection.close()
