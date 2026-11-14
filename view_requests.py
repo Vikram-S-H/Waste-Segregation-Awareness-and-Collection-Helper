@@ -20,6 +20,7 @@ if requests:
         print("Collection Date:", item["collection_date"])
         print("Instructions:", item["instructions"])
         print("Status:", item["status"])
+        print("Completed At:", item["completed_at"])
         print("-----------------------------------")
 
 else:
