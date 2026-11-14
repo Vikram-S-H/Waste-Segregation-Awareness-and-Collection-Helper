@@ -55,9 +55,38 @@
     <p>Welcome to the Waste Segregation Awareness and Collection Helper.</p>
 
     <p>From here, you can raise a waste collection request.</p>
+    
+
+<hr>
+
+<h3>My Collection Requests</h3>
+
+{% if collection_requests %}
+
+    {% for item in collection_requests %}
+
+        <div style="border: 1px solid #ddd; padding: 15px; margin-top: 15px; border-radius: 8px;">
+
+            <p><strong>Request ID:</strong> {{ item["id"] }}</p>
+
+            <p><strong>Waste Type:</strong> {{ item["waste_type"] }}</p>
+
+            <p><strong>Collection Date:</strong> {{ item["collection_date"] }}</p>
+
+            <p><strong>Status:</strong> {{ item["status"] }}</p>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>You have not submitted any collection requests yet.</p>
+    
+
+{% endif %}
 
     <a href="/request" class="button">Raise Collection Request</a>
-
     <a href="/" class="button">Back to Home</a>
 
     <a href="/user-logout" class="button logout">Logout</a>

@@ -174,6 +174,7 @@ def user_login():
     return render_template("user_login.html")
 
 
+
 @app.route("/user-dashboard")
 def user_dashboard():
 
@@ -181,11 +182,24 @@ def user_dashboard():
     if not session.get("user_id"):
         return redirect(url_for("user_login"))
 
+    # Fetch collection requests belonging to this user
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM collection_requests
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+    """, (session.get("user_id"),))
+
+    collection_requests = cursor.fetchall()
+    connection.close()
+
     return render_template(
         "user_dashboard.html",
-        user_name=session.get("user_name")
+        user_name=session.get("user_name"),
+        collection_requests=collection_requests
     )
-
 
 @app.route("/user-logout")
 def user_logout():
@@ -291,6 +305,14 @@ def admin_dashboard():
         approved_count=approved_count,
         completed_count=completed_count
     )
+
+@app.route("/admin-logout")
+def admin_logout():
+
+    # Clear the admin login session
+    session.pop("admin_logged_in", None)
+
+    return redirect(url_for("admin_login"))
 
 @app.route("/update-status/<int:request_id>", methods=["POST"])
 def update_status(request_id):
